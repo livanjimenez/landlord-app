@@ -1,15 +1,11 @@
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-import TenantList from "../components/Tenant/TenantList";
-import tenants from "../mocks/tenantMockData";
+import { Container } from "@mui/material";
+import TenantList from "../components/TenantList";
 
 const DashboardContainer = () => {
   return (
-    <>
-      <Topbar />
-      <Sidebar />
-      <TenantList tenants={tenants} />
-    </>
+    <Container>
+      <TenantList />
+    </Container>
   );
 };
 
