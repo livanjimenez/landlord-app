@@ -21,7 +21,10 @@ import TenantDetail from "./TenantDetail";
 async function getTenantData() {
   const tenantCollection = collection(db, "Tenants");
   const tenantSnapshot = await getDocs(tenantCollection);
-  const tenantList = tenantSnapshot.docs.map((doc) => doc.data());
+  const tenantList = tenantSnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
   return tenantList;
 }
 
@@ -41,6 +44,7 @@ function TenantList() {
 
   const handleClose = () => {
     setOpen(false);
+    fetchData();
   };
 
   const handleDialogOpen = () => {
@@ -105,6 +109,7 @@ function TenantList() {
               <TableCell>Email</TableCell>
               <TableCell>Lease Start</TableCell>
               <TableCell>Lease End</TableCell>
+              <TableCell>{""}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -113,12 +118,20 @@ function TenantList() {
                 <TableCell>{tenant.name}</TableCell>
                 <TableCell>{tenant.email}</TableCell>
                 <TableCell>
-                  {new Date(tenant.leaseStart).toLocaleDateString()}
+                  {new Date(
+                    tenant.leaseStart.seconds * 1000
+                  ).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  {new Date(tenant.leaseEnd).toLocaleDateString()}
+                  {new Date(
+                    tenant.leaseEnd.seconds * 1000
+                  ).toLocaleDateString()}
                 </TableCell>
-                <Button onClick={() => handleEditClick(tenant.id)}>Edit</Button>
+                <TableCell>
+                  <Button onClick={() => handleEditClick(tenant.id)}>
+                    Edit
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
             <Dialog open={open} onClose={handleClose}>

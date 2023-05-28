@@ -1,24 +1,47 @@
 import { useState, useEffect } from "react";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "../configs/firebaseConfig";
 import { TextField, Button } from "@mui/material";
 
 async function getTenant(tenantId) {
   const tenantDoc = doc(db, "Tenants", tenantId);
   const tenantData = await getDoc(tenantDoc);
-  return tenantData.data();
+  if (tenantData.exists()) {
+    const data = tenantData.data();
+    return {
+      ...data,
+      leaseStart: data.leaseStart.toDate(),
+      leaseEnd: data.leaseEnd.toDate(),
+    };
+  } else {
+    throw new Error("Tenant not found");
+  }
 }
 
 async function updateTenant(tenantId, tenantData) {
   const tenantDoc = doc(db, "Tenants", tenantId);
-  await setDoc(tenantDoc, tenantData);
+  const tenantDataToSend = {
+    ...tenantData,
+    leaseStart: Timestamp.fromDate(tenantData.leaseStart),
+    leaseEnd: Timestamp.fromDate(tenantData.leaseEnd),
+  };
+  await setDoc(tenantDoc, tenantDataToSend);
 }
 
 function TenantDetail({ tenantId, handleClose }) {
-  const [tenant, setTenant] = useState({});
+  const [tenant, setTenant] = useState({
+    name: "",
+    email: "",
+    leaseStart: null,
+    leaseEnd: null,
+  });
 
   const handleChange = (e) => {
-    setTenant({ ...tenant, [e.target.name]: e.target.value });
+    if (e.target.name === "leaseStart" || e.target.name === "leaseEnd") {
+      setTenant({ ...tenant, [e.target.name]: new Date(e.target.value) });
+    } else {
+      setTenant({ ...tenant, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -49,6 +72,26 @@ function TenantDetail({ tenantId, handleClose }) {
         name="email"
         label="Email"
         value={tenant.email || ""}
+        onChange={handleChange}
+        fullWidth
+      />
+      <TextField
+        name="leaseStart"
+        label="Lease Start"
+        type="date"
+        value={
+          tenant.leaseStart ? tenant.leaseStart.toISOString().split("T")[0] : ""
+        }
+        onChange={handleChange}
+        fullWidth
+      />
+      <TextField
+        name="leaseEnd"
+        label="Lease End"
+        type="date"
+        value={
+          tenant.leaseEnd ? tenant.leaseEnd.toISOString().split("T")[0] : ""
+        }
         onChange={handleChange}
         fullWidth
       />
