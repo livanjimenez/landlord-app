@@ -66,7 +66,7 @@ function AddTenantDialog({ open, handleClose }) {
           />
           <TextField
             name="leaseStart"
-            label="Lease Start"
+            // label="Lease Start"
             type="date"
             value={
               tenantData.leaseStart
@@ -78,7 +78,7 @@ function AddTenantDialog({ open, handleClose }) {
           />
           <TextField
             name="leaseEnd"
-            label="Lease End"
+            // label="Lease End"
             type="date"
             value={
               tenantData.leaseEnd

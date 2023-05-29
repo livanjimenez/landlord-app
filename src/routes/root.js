@@ -1,9 +1,9 @@
-import DashboardContainer from "../containers/DashboardContainer";
+import TenantsContainer from "../containers/TenantsContainer";
 
 export default function Root() {
   return (
     <>
-      <DashboardContainer />
+      <TenantsContainer />
     </>
   );
 }
