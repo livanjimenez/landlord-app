@@ -1,12 +1,17 @@
 import { Container } from "@mui/material";
 import TenantList from "../components/TenantList";
+import LandlordDetails from "../components/LandlordDetails";
+import styles from "./styles.module.css";
 
-const DashboardContainer = () => {
+const TenantsContainer = () => {
   return (
-    <Container>
-      <TenantList />
-    </Container>
+    <div className={styles.wrapper}>
+      <Container>
+        <LandlordDetails />
+        <TenantList />
+      </Container>
+    </div>
   );
 };
 
-export default DashboardContainer;
+export default TenantsContainer;

@@ -97,9 +97,7 @@ function TenantList() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleDialogOpen}>
-        Add Tenant
-      </Button>
+      <Button onClick={handleDialogOpen}>Add Tenant</Button>
       <AddTenantDialog open={dialogOpen} handleClose={handleDialogClose} />
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
