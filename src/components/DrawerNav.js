@@ -12,6 +12,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import BusinessIcon from "@mui/icons-material/Business";
 import PaymentIcon from "@mui/icons-material/Payment";
 import PeopleIcon from "@mui/icons-material/People";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -32,14 +33,20 @@ const DrawerNav = ({ isMobile }) => (
       <StyledDrawer variant="permanent">
         <List>
           {[
-            { icon: <HomeIcon />, text: "Home" },
-            { icon: <BusinessIcon />, text: "Properties" },
-            { icon: <PaymentIcon />, text: "Transactions" },
-            { icon: <PeopleIcon />, text: "Renters" },
+            { icon: <HomeIcon />, text: "Home", link: "/" },
+            { icon: <BusinessIcon />, text: "Properties", link: "/properties" },
+            {
+              icon: <PaymentIcon />,
+              text: "Transactions",
+              link: "/transactions",
+            },
+            { icon: <PeopleIcon />, text: "Renters", link: "/renters" },
           ].map((item, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton
                 sx={{ justifyContent: "flex-start", width: "100%" }}
+                component={Link}
+                to={item.link}
               >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />
