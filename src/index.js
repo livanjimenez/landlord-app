@@ -6,6 +6,7 @@ import Root from "./routes/root";
 import Properties from "./routes/properties";
 import Transactions from "./routes/transactions";
 import Renters from "./routes/renters";
+import CheckoutRoute from "./routes/checkoutRoute";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/renters",
     element: <Renters />,
+  },
+  {
+    path: "/checkout",
+    element: <CheckoutRoute />,
   },
 ]);
 
