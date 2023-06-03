@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { AppBar, Toolbar, Typography } from '@mui/material';
 
 const drawerWidth = 181;
 
@@ -8,9 +8,9 @@ const AppbarNav = ({ isMobile }) => (
     position="fixed"
     sx={{
       zIndex: 1201,
-      width: isMobile ? "100%" : `calc(100% - ${drawerWidth}px)`,
-      boxShadow: "none",
-      borderBottom: "1px solid #999",
+      width: isMobile ? '100%' : `calc(100% - ${drawerWidth}px)`,
+      boxShadow: 'none',
+      borderBottom: '1px solid #999',
     }}
   >
     <Toolbar>
