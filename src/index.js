@@ -7,6 +7,7 @@ import Properties from "./routes/properties";
 import Transactions from "./routes/transactions";
 import Renters from "./routes/renters";
 import CheckoutRoute from "./routes/checkoutRoute";
+import LoginRoute from "./routes/LoginRoute";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/checkout",
     element: <CheckoutRoute />,
+  },
+  {
+    path: "/Login",
+    element: <LoginRoute />,
   },
 ]);
 
