@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { collection, getDocs, addDoc } from "firebase/firestore";
-import { db } from "../configs/firebaseConfig";
+import React, { useEffect, useState } from 'react';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore';
+import { db } from '../configs/firebaseConfig';
 import {
   Table,
   TableBody,
@@ -14,12 +20,12 @@ import {
   Button,
   Dialog,
   DialogContent,
-} from "@mui/material";
-import AddPropertyDialog from "./AddPropertyDialog";
-import PropertyDetail from "./PropertyDetail";
+} from '@mui/material';
+import AddPropertyDialog from './AddPropertyDialog';
+import PropertyDetail from './PropertyDetail';
 
 async function getPropertyData() {
-  const propertyCollection = collection(db, "Properties");
+  const propertyCollection = collection(db, 'Properties');
   const propertySnapshot = await getDocs(propertyCollection);
   const propertyList = propertySnapshot.docs.map((doc) => ({
     ...doc.data(),
@@ -40,6 +46,15 @@ function PropertyList() {
   const handleEditClick = (propertyId) => {
     setSelectedPropertyId(propertyId);
     setOpen(true);
+  };
+
+  const handleDeleteClick = async (propertyId) => {
+    try {
+      await deleteDoc(doc(db, 'Properties', propertyId));
+      fetchData();
+    } catch (e) {
+      setError(e.message);
+    }
   };
 
   const handleClose = () => {
@@ -89,11 +104,11 @@ function PropertyList() {
 
   const handleAddProperty = async (property) => {
     try {
-      const docRef = await addDoc(collection(db, "Properties"), property);
-      console.log("Property added with ID: ", docRef.id);
+      const docRef = await addDoc(collection(db, 'Properties'), property);
+      console.log('Property added with ID: ', docRef.id);
       fetchData();
     } catch (error) {
-      console.error("Error adding property: ", error);
+      console.error('Error adding property: ', error);
     }
   };
 
@@ -107,20 +122,23 @@ function PropertyList() {
 
   return (
     <div>
-      <Button onClick={handleDialogOpen}>Add Property</Button>
+      <Button variant="outlined" onClick={handleDialogOpen}>
+        Add Property
+      </Button>
       <AddPropertyDialog
         open={dialogOpen}
         handleClose={handleDialogClose}
         handleAddProperty={handleAddProperty}
       />
       <TableContainer component={Paper}>
-        <Table aria-label="simple table">
+        <Table aria-label="simpletable">
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Address</TableCell>
               <TableCell>Price</TableCell>
-              <TableCell>{""}</TableCell>
+              <TableCell>{''}</TableCell>
+              <TableCell>{''}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -132,6 +150,15 @@ function PropertyList() {
                 <TableCell>
                   <Button onClick={() => handleEditClick(property.id)}>
                     Edit
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleDeleteClick(property.id)}
+                  >
+                    Delete
                   </Button>
                 </TableCell>
               </TableRow>

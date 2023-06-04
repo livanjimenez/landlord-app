@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../configs/firebaseConfig";
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { db } from '../configs/firebaseConfig';
 import {
   Table,
   TableBody,
@@ -14,12 +14,12 @@ import {
   Button,
   Dialog,
   DialogContent,
-} from "@mui/material";
-import AddTenantDialog from "./AddTenantDialog";
-import TenantDetail from "./TenantDetail";
+} from '@mui/material';
+import AddTenantDialog from './AddTenantDialog';
+import TenantDetail from './TenantDetail';
 
 async function getTenantData() {
-  const tenantCollection = collection(db, "Tenants");
+  const tenantCollection = collection(db, 'Tenants');
   const tenantSnapshot = await getDocs(tenantCollection);
   const tenantList = tenantSnapshot.docs.map((doc) => ({
     ...doc.data(),
@@ -40,6 +40,15 @@ function TenantList() {
   const handleEditClick = (tenantId) => {
     setSelectedTenantId(tenantId);
     setOpen(true);
+  };
+
+  const handleDeleteClick = async (tenantId) => {
+    try {
+      await deleteDoc(doc(db, 'Tenants', tenantId));
+      fetchData();
+    } catch (e) {
+      setError(e.message);
+    }
   };
 
   const handleClose = () => {
@@ -72,21 +81,6 @@ function TenantList() {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getTenantData();
-        setTenants(data);
-        setLoading(false);
-      } catch (e) {
-        setError(e.message);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   if (loading) {
     return <CircularProgress />;
   }
@@ -97,7 +91,9 @@ function TenantList() {
 
   return (
     <div>
-      <Button onClick={handleDialogOpen}>Add Tenant</Button>
+      <Button variant="outlined" onClick={handleDialogOpen}>
+        Add Tenant
+      </Button>
       <AddTenantDialog open={dialogOpen} handleClose={handleDialogClose} />
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
@@ -107,7 +103,8 @@ function TenantList() {
               <TableCell>Email</TableCell>
               <TableCell>Lease Start</TableCell>
               <TableCell>Lease End</TableCell>
-              <TableCell>{""}</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -117,17 +114,26 @@ function TenantList() {
                 <TableCell>{tenant.email}</TableCell>
                 <TableCell>
                   {new Date(
-                    tenant.leaseStart.seconds * 1000
+                    tenant.leaseStart.seconds * 1000,
                   ).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
                   {new Date(
-                    tenant.leaseEnd.seconds * 1000
+                    tenant.leaseEnd.seconds * 1000,
                   ).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
                   <Button onClick={() => handleEditClick(tenant.id)}>
                     Edit
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleDeleteClick(tenant.id)}
+                  >
+                    Delete
                   </Button>
                 </TableCell>
               </TableRow>

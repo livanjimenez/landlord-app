@@ -7,7 +7,7 @@ const TenantsContainer = () => {
   return (
     <div className={styles.wrapper}>
       <Container maxWidth="md">
-        <LandlordDetails />
+        {/* <LandlordDetails /> */}
         <TenantList />
       </Container>
     </div>
