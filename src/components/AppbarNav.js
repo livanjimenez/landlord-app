@@ -2,13 +2,13 @@ import { AppBar, Toolbar, Typography } from '@mui/material';
 
 const drawerWidth = 181;
 
-const AppbarNav = ({ isMobile }) => (
+const AppbarNav = () => (
   <AppBar
     color="transparent"
     position="fixed"
     sx={{
       zIndex: 1201,
-      width: isMobile ? '100%' : `calc(100% - ${drawerWidth}px)`,
+      width: '100%',
       boxShadow: 'none',
       borderBottom: '1px solid #999',
     }}
