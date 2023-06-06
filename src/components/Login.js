@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, Paper, Box } from '@mui/material';
 import { useState } from 'react';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '../configs/firebaseConfig';
@@ -62,10 +62,43 @@ export default function Login() {
   };
 
   return (
-    <Grid container direction="column" justify="center" alignItems="center">
-      <Typography variant="h4">Login</Typography>
-      {error && <Typography color="error">{error}</Typography>}
-      <Button onClick={handleGoogleLogin}>Login with Google</Button>
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      style={{
+        minHeight: '100vh',
+        padding: '20px',
+        marginTop: '20%',
+        overflow: 'hidden',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+      }}
+    >
+      <Box maxWidth={400}>
+        <Paper elevation={12} style={{ padding: '20px' }}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Please Login using your Gmail 😄
+          </Typography>
+          {error && (
+            <Typography color="error" align="center">
+              {error}
+            </Typography>
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleGoogleLogin}
+          >
+            Login with Google
+          </Button>
+        </Paper>
+      </Box>
     </Grid>
   );
 }

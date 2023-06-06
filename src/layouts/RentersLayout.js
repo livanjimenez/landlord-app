@@ -13,7 +13,7 @@ function RentersLayout() {
     <>
       <AppbarNav />
       <DrawerNav />
-      {/* <TenantsContainer /> */}
+      <TenantsContainer />
       {/* <PropertiesContainer /> */}
     </>
   );

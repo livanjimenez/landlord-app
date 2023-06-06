@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 import {
   Drawer,
   List,
@@ -13,32 +13,33 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import PeopleIcon from '@mui/icons-material/People';
 import { Link } from 'react-router-dom';
 
-const drawerWidth = 240;
-
-const StyledDrawer = styled(Drawer)(({ theme }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: 'nowrap',
-  boxSizing: 'border-box',
-  overflowX: 'hidden',
-  [theme.breakpoints.down('sm')]: {
-    display: 'none',
-  },
-}));
-
 const DrawerNav = () => (
   <div>
-    <StyledDrawer variant="permanent">
+    <AppBar
+      position="fixed"
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
+      <Toolbar>
+        <Typography variant="h6" noWrap>
+          Landlord Dashboard
+        </Typography>
+      </Toolbar>
+    </AppBar>
+    <Drawer
+      variant="permanent"
+      sx={{ width: '240px', flexShrink: 0, marginTop: '64px' }}
+    >
+      <Toolbar /> {/* Add an empty toolbar for proper spacing */}
       <List>
         {[
-          { icon: <HomeIcon />, text: 'Home', link: '/' },
+          { icon: <HomeIcon />, text: 'Home', link: '/app' },
           { icon: <BusinessIcon />, text: 'Properties', link: '/properties' },
           // {
           //   icon: <PaymentIcon />,
           //   text: 'Payments',
           //   link: '/transactions',
           // },
-          // { icon: <PeopleIcon />, text: 'Tenants', link: '/renters' },
+          { icon: <PeopleIcon />, text: 'Tenants', link: '/renters' },
         ].map((item, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton
@@ -52,7 +53,7 @@ const DrawerNav = () => (
           </ListItem>
         ))}
       </List>
-    </StyledDrawer>
+    </Drawer>
   </div>
 );
 
